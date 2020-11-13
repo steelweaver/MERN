@@ -1,9 +1,7 @@
 cls
 
-##### powershell.exe -command "Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' ; Disable-NetAdapterBinding -name 'Wi-Fi*' -DisplayName 'Juniper Network Service' ; Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service'"
 
-###### Create Chrome application Teams web shortcut #####
-
+##### DL tools #####
 start-job -scriptblock { $dest = ($home + '\downloads\SetDefaultBrowser.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://raw.githubusercontent.com/steelweaver/MERN/main/SetDefaultBrowser.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
@@ -18,7 +16,7 @@ start-job -scriptblock { $dest = ($home + '\downloads\AnyDesk.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://download.anydesk.com/AnyDesk.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
-
+##### Create Chrome application Teams web shortcut #####
 if ( -Not (test-path ($home + '\AppData\Local\Microsoft\Teams\Update.exe')))
 {
     write-host "<<<<<<<<<<<<<<<<< Teams application not installed >>>>>>>>>>>>>>>>>>>>>"
@@ -98,13 +96,11 @@ Write-Host 'Username ' + $env:USERNAME
 wmic bios get serialnumber,manufacturer
 wmic os get BuildNumber
 
-(New-Object System.Net.WebClient).DownloadFile('https://acces.mrn.gouv.qc.ca/dana-cached/psal/PulseSecureAppLauncher.msi' , $home +'\Desktop\PulseSecureAppLauncher.msi') 
-
+(New-Object System.Net.WebClient).DownloadFile('https://acces.mrn.gouv.qc.ca/dana-cached/psal/PulseSecureAppLauncher.msi' , $home +'\downloads\PulseSecureAppLauncher.msi') 
 $cmd = ($home + '\downloads\SetDefaultBrowser.exe chrome')
 Start-Process 'cmd' -ArgumentList "/c $cmd"
 
 $cred = Get-Credential -UserName 'EMISUPPORT' -Message ' '
-msiexec.exe  /i  ($home +'\Desktop\PulseSecureAppLauncher.msi') /qn 
 
 $scriptblock = {     
         Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
@@ -117,17 +113,4 @@ $encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptbl
 
 Start-Process 'cmd' -Credential $cred -ArgumentList "/k powershell.exe -NoProfile -EncodedCommand $encoded"
 
-<#
-Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' |select-object DisplayName, Enabled
-#$Credential = Get-Credential itdroplets\UserB
-#Start the Job as UserB
-$GetProcessJob = Start-Job -Credential $cred -ScriptBlock { Disable-NetAdapterBinding -name 'Wi-Fi*' -DisplayName 'Juniper Network Service'} 
-#Wait until the job is completed
-Wait-Job $GetProcessJob
-#Get the Job results
-$GetProcessResult = Receive-Job -Job $GetProcessJob
-#Print the Job results
-$GetProcessResult
-
-Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' |select-object DisplayName, Enabled
-#>
+msiexec.exe  /i  ($home +'\downloads\PulseSecureAppLauncher.msi') /qn
