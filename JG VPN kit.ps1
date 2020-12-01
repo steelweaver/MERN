@@ -114,3 +114,36 @@ $encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptbl
 Start-Process 'cmd' -Credential $cred -ArgumentList "/k powershell.exe -NoProfile -EncodedCommand $encoded"
 
 msiexec.exe  /i  ($home +'\downloads\PulseSecureAppLauncher.msi') /qn
+
+$mapdrives = @' 
+setlocal EnableExtensions EnableDelayedExpansion
+set "LOGTEXTFILE=C:\mrnmicro\usagers\xx%username%.log"
+set "INTEXTFILE=C:\Users\%username%\Desktop\input.bat"
+set "OUTTEXTFILE=C:\Users\%username%\Desktop\output.bat"
+del %OUTTEXTFILE%
+
+set "SEARCHTEXT=OK"
+set "REPLACETEXT=net use"
+
+set "SEARCHTEXT1=Microsoft Windows Network"
+set "REPLACETEXT1="
+
+findstr "OK.*" C:\mrnmicro\usagers\xx%username%.log>C:\Users\%username%\Desktop\input.bat
+for /f "delims=" %%A in ('type "%INTEXTFILE%"') do (
+    set "string=%%A"
+    
+set "modified=!string:%SEARCHTEXT%=%REPLACETEXT%!"
+set "string=!modified:%SEARCHTEXT1%=%REPLACETEXT1%!"
+
+	::set "modified=!string:Microsoft Windows Network= !"
+	echo !string!>>"%OUTTEXTFILE%"
+)
+
+del %INTEXTFILE%
+cmd /c %OUTTEXTFILE%
+del %OUTTEXTFILE%
+'@
+
+#$mapdrives |out-file ($home +'\Desktop\lecteurs reseau.bat')
+
+Set-Content -Path ($home +'\Desktop\lecteurs reseau.bat') -Value $mapdrives
