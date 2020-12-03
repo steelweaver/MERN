@@ -28,6 +28,13 @@ if ( -Not (test-path ($home + '\AppData\Local\Microsoft\Teams\Update.exe')))
                             (New-Object System.Net.WebClient).DownloadFile($url  , $dest ) }
                             }
 }
+else
+{
+    copy-item ($home + '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Microsoft Teams.lnk') -Destination ($home +'\Desktop\2a - Microsoft Teams.lnk') -Force -verbose -passthru
+}
+
+
+
 
 if  (-not (Test-Path ($home + '\Documents\Default.rdp') -PathType leaf) )
 { 
@@ -53,41 +60,56 @@ else
     }
 }
 
-$Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\Desktop\Pulse_Secure.lnk') ;  $Shortcut.TargetPath = 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Pulse Secure\Pulse Secure.lnk' ; $Shortcut.Save()
+
+$Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\Desktop\1a - Pulse_Secure.lnk') ;  $Shortcut.TargetPath = 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Pulse Secure\Pulse Secure.lnk' ; $Shortcut.Save()
 
 ###### teams web ######
 (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/microsoft_teams_256x256_WYr_icon.ico' , $home +'\Teams.ico') 
 
 $WshShell = New-Object -comObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\Teams Web.lnk')
+$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Web.lnk')
 $Shortcut.TargetPath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
 $shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
 $Shortcut.Save()
 
 ##### Network Connect ######
-$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\Network Connect.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer Intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+
+$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer FoncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
+
+<#
+$rdpContent = "test"
+$rdpID = "test"
+Set-Content -Path ($home + '\Desktop\3a - ' + $rdpID + '.rdp') -Value $rdpContent
+#>
 
 ##### RDP web #####
 $rdpID = "Connexion_a_distance"
 
-if (  (test-path ($home + '\AppData\Local\Microsoft\Teams\Update.exe')))
+if (  (test-path ($home + '\Documents\Default.rdp')))
 {
     Get-Content  ($home + '\Documents\Default.rdp') | Where-Object {$_ -match 'full address:'} | ForEach-Object { $rdpID = $_ } 
     if ($rdpID.length -ge 6) 
     {
+        $rdpContent = Get-Content  ($home + '\Documents\Default.rdp')
         $rdpID = ($rdpID -replace '.*:','').ToUpper()
-        $filesource = ($home + '\Documents\Default.rdp')
-        copy-item ($home + '\Documents\Default.rdp') -Destination ($home + '\Desktop\' + $rdpID+ '.rdp') -Force -verbose -passthru
-        Set-ItemProperty -Path ($home + '\Desktop\' + $rdpID+ '.rdp')  -Name Attributes -Value Normal
+        Set-Content -Path ($home + '\Desktop\3a - ' + $rdpID+ '.rdp') -Value $rdpContent
+
+        #$filesource = ($home + '\Documents\Default.rdp')
+        #copy-item ($home + '\Documents\Default.rdp') -Destination ($home + '\Desktop\3a - ' + $rdpID+ '.rdp') -Force -verbose -passthru
+        #Set-ItemProperty -Path ($home + '\Desktop\3a - ' + $rdpID+ '.rdp')  -Name Attributes -Value Normal
     }
 }
 else {
-    new-item ($home + '\Desktop\Connexion_a_distance.rdp')
+    new-item ($home + '\Desktop\3a - Connexion_a_distance.rdp')
 }
 
 write-host $rdpID 
-$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\' + $rdpID+ '.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+
+$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' foncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
+
 
 ie4uinit.exe -show
 
