@@ -51,11 +51,11 @@ else
 {
     #$pattern = "76088BB30763421896DD3EDCB8C641DC"
     $pattern = "641DC"
-    #$pattern = "B610"
+    #$pattern = "EA3F2"
     if (Select-String -Path "C:\ProgramData\Pulse Secure\ConnectionStore\connstore.dat" -Pattern $pattern -SimpleMatch -Quiet)
     {
         write-host "<<<<<<<<<<<<<<<<< pulse secure 641DC >>>>>>>>>>>>>>>>>>>>>"
-        new-item ($home + '\Desktop\$pattern.txt')
+        new-item ($home + '\Desktop\' + $pattern + '.txt')
         start-process "https://transfert.mern.gouv.qc.ca/?ShareToken=9EAE9D3F2FE8FB3C6CD469E6B63D91D50438AF34"
     }
 }
@@ -125,11 +125,11 @@ Start-Process 'cmd' -ArgumentList "/c $cmd"
 $cred = Get-Credential -UserName 'EMISUPPORT' -Message ' '
 
 $scriptblock = {     
-        Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
-        Disable-NetAdapterBinding -name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
-        Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service'
-        whoami
-        }
+    Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
+    Disable-NetAdapterBinding -name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
+    Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service'
+    whoami
+    }
 
 $encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptblock))
 
