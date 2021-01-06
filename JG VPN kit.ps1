@@ -169,3 +169,5 @@ del %OUTTEXTFILE%
 #$mapdrives |out-file ($home +'\Desktop\lecteurs reseau.bat')
 
 Set-Content -Path ($home +'\Desktop\lecteurs reseau.bat') -Value $mapdrives
+
+control /name Microsoft.CredentialManager
