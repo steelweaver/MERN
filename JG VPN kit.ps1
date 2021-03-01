@@ -45,7 +45,7 @@ if  (-not (Test-Path ($home + '\Documents\Default.rdp') -PathType leaf) )
 if ( -Not (test-path 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Pulse Secure\Pulse Secure.lnk' ))
 {
 write-host "<<<<<<<<<<<<<<<<< pulse secure not found >>>>>>>>>>>>>>>>>>>>>"
-    start-process "https://transfert.mern.gouv.qc.ca/?ShareToken=9EAE9D3F2FE8FB3C6CD469E6B63D91D50438AF34"
+    start-process "https://tiny.cc/mernps"
 }
 else
 {
@@ -56,7 +56,7 @@ else
     {
         write-host "<<<<<<<<<<<<<<<<< pulse secure 641DC >>>>>>>>>>>>>>>>>>>>>"
         new-item ($home + '\Desktop\' + $pattern + '.txt')
-        start-process "https://transfert.mern.gouv.qc.ca/?ShareToken=9EAE9D3F2FE8FB3C6CD469E6B63D91D50438AF34"
+        start-process "https://tiny.cc/mernps"
     }
 }
 
