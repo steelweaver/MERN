@@ -1,0 +1,1 @@
+powershell.exe -command "(New-Object -ComObject 'Shell.Application').WindowsSecurity()"
