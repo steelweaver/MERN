@@ -73,10 +73,6 @@ $shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
 $Shortcut.Save()
 
-##### Network Connect ######
-$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer Intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
-
-$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer FoncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
 
 <#
 $rdpContent = "test"
@@ -106,9 +102,24 @@ else {
 }
 
 write-host $rdpID 
-$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+$guessdomain = (cmdkey.exe /list)|out-string
 
-$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' foncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
+
+if( $guessdomain -match "intranet")
+{
+    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer Intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+}
+
+if( $guessdomain -match "foncierqc")
+{
+    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer FoncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
+    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' foncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
+}
+
+
+##### Network Connect ######
+
 
 
 ie4uinit.exe -show
