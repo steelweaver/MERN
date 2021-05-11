@@ -1,0 +1,1 @@
+powershell.exe -command "Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service' ; Disable-NetAdapterBinding -name '*' -DisplayName 'Juniper Network Service' ; Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service'"
