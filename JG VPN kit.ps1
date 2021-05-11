@@ -136,9 +136,9 @@ Start-Process 'cmd' -ArgumentList "/c $cmd"
 $cred = Get-Credential -UserName 'EMISUPPORT' -Message ' '
 
 $scriptblock = {     
-    Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
-    Disable-NetAdapterBinding -name 'Wi-Fi*' -DisplayName 'Juniper Network Service' 
-    Get-NetAdapterBinding -Name 'Wi-Fi*' -DisplayName 'Juniper Network Service'
+    Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service' 
+    Disable-NetAdapterBinding -name '*' -DisplayName 'Juniper Network Service' 
+    Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service'
     whoami
     }
 
