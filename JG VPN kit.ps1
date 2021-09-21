@@ -75,9 +75,9 @@ $Shortcut.Save()
 
 
 <#
-$rdpContent = "test"
-$rdpID = "test"
-Set-Content -Path ($home + '\Desktop\3a - ' + $rdpID + '.rdp') -Value $rdpContent
+	$rdpContent = "test"
+	$rdpID = "test"
+	Set-Content -Path ($home + '\Desktop\3a - ' + $rdpID + '.rdp') -Value $rdpContent
 #>
 
 ##### RDP web #####
@@ -104,7 +104,7 @@ else {
 write-host $rdpID 
 $guessdomain = (cmdkey.exe /list)|out-string
 
-
+<#
 if( $guessdomain -match "intranet")
 {
     $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer Intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
@@ -116,7 +116,7 @@ if( $guessdomain -match "foncierqc")
     $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer FoncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
     $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' foncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
 }
-
+#>
 
 ##### Network Connect ######
 
