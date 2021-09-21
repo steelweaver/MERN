@@ -120,8 +120,6 @@ if( $guessdomain -match "foncierqc")
 
 ##### Network Connect ######
 
-
-
 ie4uinit.exe -show
 
 Write-Host 'Computername ' + $env:COMPUTERNAME
@@ -146,7 +144,7 @@ $encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptbl
 
 Start-Process 'cmd' -Credential $cred -ArgumentList "/k powershell.exe -NoProfile -EncodedCommand $encoded"
 
-msiexec.exe  /i  ($home +'\downloads\PulseSecureAppLauncher.msi') /qn
+#msiexec.exe  /i  ($home +'\downloads\PulseSecureAppLauncher.msi') /qn
 
 $mapdrives = @' 
 setlocal EnableExtensions EnableDelayedExpansion
@@ -179,6 +177,10 @@ del %OUTTEXTFILE%
 
 #$mapdrives |out-file ($home +'\Desktop\lecteurs reseau.bat')
 
-Set-Content -Path ($home +'\Desktop\lecteurs reseau.bat') -Value $mapdrives
+if ( $env:UserName -notmatch "utlocal")
+{
+	write-host $env:UserName 
+	Set-Content -Path ($home +'\Desktop\lecteurs reseau.bat') -Value $mapdrives
+}
 
-control /name Microsoft.CredentialManager
+#control /name Microsoft.CredentialManager
