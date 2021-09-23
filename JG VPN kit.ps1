@@ -175,12 +175,12 @@ cmd /c %OUTTEXTFILE%
 del %OUTTEXTFILE%
 '@
 
-#$mapdrives |out-file ($home +'\Desktop\lecteurs reseau.bat')
+#$mapdrives |out-file ($home +'\Desktop\2.5a - lecteurs reseau.bat')
 
 if ( $env:UserName -notmatch "utlocal")
 {
 	write-host $env:UserName 
-	Set-Content -Path ($home +'\Desktop\lecteurs reseau.bat') -Value $mapdrives
+	Set-Content -Path ($home +'\Desktop\2.5a - lecteurs reseau.bat') -Value $mapdrives
 }
 
 #control /name Microsoft.CredentialManager
