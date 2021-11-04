@@ -31,6 +31,7 @@ if ( -Not (test-path ($home + '\AppData\Local\Microsoft\Teams\Update.exe')))
 else
 {
     copy-item ($home + '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Microsoft Teams.lnk') -Destination ($home +'\Desktop\2a - Microsoft Teams.lnk') -Force -verbose -passthru
+    copy-item ($home + '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Microsoft Teams.lnk') -Destination ($home +'\OneDrive - BuroVirtuel\Bureau\2a - Microsoft Teams.lnk') -Force -verbose -passthru
 }
 
 
@@ -56,12 +57,14 @@ else
     {
         write-host "<<<<<<<<<<<<<<<<< pulse secure 641DC >>>>>>>>>>>>>>>>>>>>>"
         new-item ($home + '\Desktop\' + $pattern + '.txt')
+        new-item ($home + '\OneDrive - BuroVirtuel\Bureau\' + $pattern + '.txt')
         start-process "https://tiny.cc/mernps"
     }
 }
 
 
 $Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\Desktop\1a - Pulse_Secure.lnk') ;  $Shortcut.TargetPath = 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Pulse Secure\Pulse Secure.lnk' ; $Shortcut.Save()
+$Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\OneDrive - BuroVirtuel\Bureau\1a - Pulse_Secure.lnk') ;  $Shortcut.TargetPath = 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Pulse Secure\Pulse Secure.lnk' ; $Shortcut.Save()
 
 ###### teams web ######
 (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/microsoft_teams_256x256_WYr_icon.ico' , $home +'\Teams.ico') 
@@ -73,12 +76,14 @@ $shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
 $Shortcut.Save()
 
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web.lnk')
+$Shortcut.TargetPath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
 
-<#
-	$rdpContent = "test"
-	$rdpID = "test"
-	Set-Content -Path ($home + '\Desktop\3a - ' + $rdpID + '.rdp') -Value $rdpContent
-#>
+
 
 ##### RDP web #####
 $rdpID = "Connexion_a_distance"
@@ -91,7 +96,8 @@ if (  (test-path ($home + '\Documents\Default.rdp')))
         $rdpContent = Get-Content  ($home + '\Documents\Default.rdp')
         $rdpID = ($rdpID -replace '.*:','').ToUpper()
         Set-Content -Path ($home + '\Desktop\3a - ' + $rdpID+ '.rdp') -Value $rdpContent
-
+         Set-Content -Path ($home + '\OneDrive - BuroVirtuel\Bureau\3a - ' + $rdpID+ '.rdp') -Value $rdpContent
+         
         #$filesource = ($home + '\Documents\Default.rdp')
         #copy-item ($home + '\Documents\Default.rdp') -Destination ($home + '\Desktop\3a - ' + $rdpID+ '.rdp') -Force -verbose -passthru
         #Set-ItemProperty -Path ($home + '\Desktop\3a - ' + $rdpID+ '.rdp')  -Name Attributes -Value Normal
@@ -99,37 +105,62 @@ if (  (test-path ($home + '\Documents\Default.rdp')))
 }
 else {
     new-item ($home + '\Desktop\3a - Connexion_a_distance.rdp')
+    new-item ($home + '\OneDrive - BuroVirtuel\Bureau\3a - Connexion_a_distance.rdp')
 }
 
 write-host $rdpID 
 $guessdomain = (cmdkey.exe /list)|out-string
 
-<#
-if( $guessdomain -match "intranet")
-{
-    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer Intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
-    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' intranet.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
-}
 
-if( $guessdomain -match "foncierqc")
-{
-    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Démarrer FoncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
-    $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\3b - ' + $rdpID + ' foncierQC.url');$s.TargetPath='https://teleacces-st.mern.gouv.qc.ca/';$s.Save()
-}
-#>
-
-##### Network Connect ######
-
-ie4uinit.exe -show
 
 Write-Host 'Computername ' + $env:COMPUTERNAME
 Write-Host 'Username ' + $env:USERNAME
 wmic bios get serialnumber,manufacturer
 wmic os get BuildNumber
 
-(New-Object System.Net.WebClient).DownloadFile('https://acces.mrn.gouv.qc.ca/dana-cached/psal/PulseSecureAppLauncher.msi' , $home +'\downloads\PulseSecureAppLauncher.msi') 
 $cmd = ($home + '\downloads\SetDefaultBrowser.exe chrome')
 Start-Process 'cmd' -ArgumentList "/c $cmd"
+
+#msiexec.exe  /i  ($home +'\downloads\PulseSecureAppLauncher.msi') /qn
+
+
+if ( $env:UserName -notmatch "utlocal")
+{
+	write-host $env:UserName 
+
+    $mappingscript = {
+        $log = get-content C:\mrnmicro\usagers\xx$env:UserName.log
+
+        $regex = "Microsoft Windows Network"
+        $scriptblock = ""
+
+        foreach($line in Get-Content C:\mrnmicro\usagers\xx$env:UserName.log) {
+            if($line -match $regex){
+                $line = $line.replace($regex,"")
+                $line = $line.replace("OK","net use")
+                $scriptblock = $scriptblock + "`n" +  $line
+            }
+        }
+
+        $encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptblock))
+        $batfile = ('C:\mrnmicro\usagers\$env:UserName\map_drives.bat')
+        $cmdcode = ('powershell.exe -NoProfile -EncodedCommand '+$encoded)
+        #$cmdcode | Out-File -encoding "ASCII" -filePath $batfile
+        Set-Content -Path $batfile -Value $cmdcode
+        Invoke-WmiMethod -Path Win32_Process -Name Create -ArgumentList $cmdcode
+     }
+    
+    $coded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($mappingscript))
+    $mapper = ("C:\mrnmicro\usagers\$env:UserName\lecteurs_reseau.bat")
+    $cmd = ('powershell.exe -NoProfile -EncodedCommand '+$coded)
+    #$cmd | Out-File -encoding "ASCII" -filePath ($home +'\Desktop\2.5a - lecteurs reseau.bat')
+    #$cmd | Out-File -encoding "ASCII" -filePath ($home +'\OneDrive - BuroVirtuel\Bureau\2.5a - lecteurs reseau.bat')
+
+	Set-Content -Path ($home +'\Desktop\2.5a - lecteurs reseau.bat') -Value $cmd
+    Set-Content -Path ($home +'\OneDrive - BuroVirtuel\Bureau\2.5a - lecteurs reseau.bat') -Value $cmd
+}
+
+ie4uinit.exe -show
 
 $cred = Get-Credential -UserName 'EMISUPPORT' -Message ' '
 
@@ -143,44 +174,3 @@ $scriptblock = {
 $encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptblock))
 
 Start-Process 'cmd' -Credential $cred -ArgumentList "/k powershell.exe -NoProfile -EncodedCommand $encoded"
-
-#msiexec.exe  /i  ($home +'\downloads\PulseSecureAppLauncher.msi') /qn
-
-$mapdrives = @' 
-setlocal EnableExtensions EnableDelayedExpansion
-set "LOGTEXTFILE=C:\mrnmicro\usagers\xx%username%.log"
-set "INTEXTFILE=C:\Users\%username%\Desktop\input.bat"
-set "OUTTEXTFILE=C:\Users\%username%\Desktop\output.bat"
-del %OUTTEXTFILE%
-
-set "SEARCHTEXT=OK"
-set "REPLACETEXT=net use"
-
-set "SEARCHTEXT1=Microsoft Windows Network"
-set "REPLACETEXT1="
-
-findstr "OK.*" C:\mrnmicro\usagers\xx%username%.log>C:\Users\%username%\Desktop\input.bat
-for /f "delims=" %%A in ('type "%INTEXTFILE%"') do (
-    set "string=%%A"
-    
-set "modified=!string:%SEARCHTEXT%=%REPLACETEXT%!"
-set "string=!modified:%SEARCHTEXT1%=%REPLACETEXT1%!"
-
-	::set "modified=!string:Microsoft Windows Network= !"
-	echo !string!>>"%OUTTEXTFILE%"
-)
-
-del %INTEXTFILE%
-cmd /c %OUTTEXTFILE%
-del %OUTTEXTFILE%
-'@
-
-#$mapdrives |out-file ($home +'\Desktop\2.5a - lecteurs reseau.bat')
-
-if ( $env:UserName -notmatch "utlocal")
-{
-	write-host $env:UserName 
-	Set-Content -Path ($home +'\Desktop\2.5a - lecteurs reseau.bat') -Value $mapdrives
-}
-
-#control /name Microsoft.CredentialManager
