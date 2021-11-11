@@ -6,7 +6,7 @@ start-job -scriptblock { $dest = ($home + '\downloads\SetDefaultBrowser.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://raw.githubusercontent.com/steelweaver/MERN/main/SetDefaultBrowser.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
-start-job -scriptblock { $dest = ($home + '\downloads\SetDefaultBrowser.exe')
+start-job -scriptblock { $dest = ($home + '\downloads\RevoUninstallerPortable_2.3.5.paf.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://portableapps.com/redirect/?a=RevoUninstallerPortable&s=s&d=pa&f=RevoUninstallerPortable_2.3.5.paf.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
