@@ -2,21 +2,21 @@ cls
 
 
 ##### DL tools #####
-start-job -scriptblock { $dest = ($home + '\downloads\SetDefaultBrowser.exe')
+start-job -Name SetDefaultBrowser -scriptblock { $dest = ($home + '\downloads\SetDefaultBrowser.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://raw.githubusercontent.com/steelweaver/MERN/main/SetDefaultBrowser.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
-start-job -scriptblock { $dest = ($home + '\downloads\RevoUninstallerPortable_2.3.5.paf.exe')
+start-job -Name RevoUninstallerPortable -scriptblock { $dest = ($home + '\downloads\RevoUninstallerPortable_2.3.5.paf.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://portableapps.com/redirect/?a=RevoUninstallerPortable&s=s&d=pa&f=RevoUninstallerPortable_2.3.5.paf.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
 			
-start-job -scriptblock { $dest = ($home + '\downloads\wifiinfoview.zip')
+start-job -Name wifiinfoview -scriptblock { $dest = ($home + '\downloads\wifiinfoview.zip')
                                 if ( -Not (test-path ($dest))) { $url = 'https://www.nirsoft.net/utils/wifiinfoview.zip'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
 
-start-job -scriptblock { $dest = ($home + '\downloads\AnyDesk.exe')
+start-job -Name AnyDesk -scriptblock { $dest = ($home + '\downloads\AnyDesk.exe')
                                 if ( -Not (test-path ($dest))) { $url = 'https://download.anydesk.com/AnyDesk.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
