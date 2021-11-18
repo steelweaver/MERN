@@ -39,8 +39,6 @@ else
 }
 
 
-
-
 if  (-not (Test-Path ($home + '\Documents\Default.rdp') -PathType leaf) )
 { 
     start-job -scriptblock { "mstsc.exe" }
@@ -87,7 +85,19 @@ $shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
 $Shortcut.Save()
 
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Web Edge.lnk')
+$Shortcut.TargetPath = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
 
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web Edge.lnk')
+$Shortcut.TargetPath = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
 
 ##### RDP web #####
 $rdpID = "Connexion_a_distance"
