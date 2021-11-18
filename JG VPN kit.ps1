@@ -71,30 +71,26 @@ $Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\OneDri
 ###### teams web ######
 (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/microsoft_teams_256x256_WYr_icon.ico' , $home +'\Teams.ico') 
 
+
+$allpaths = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" , "C:\Program Files\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+foreach ($thispath in $allpaths) {
+    if(test-path $thispath)
+    {
+        $TargetPath = $thispath
+    }
+}
+
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Web.lnk')
-$Shortcut.TargetPath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+$Shortcut.TargetPath =  $TargetPath
 $shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
 $Shortcut.Save()
 
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web.lnk')
-$Shortcut.TargetPath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
-$shortcut.IconLocation = $home +'\Teams.ico, 0'
-$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
-$Shortcut.Save()
-
-$WshShell = New-Object -comObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Web Edge.lnk')
-$Shortcut.TargetPath = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-$shortcut.IconLocation = $home +'\Teams.ico, 0'
-$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
-$Shortcut.Save()
-
-$WshShell = New-Object -comObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web Edge.lnk')
-$Shortcut.TargetPath = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+$Shortcut.TargetPath =  $TargetPath
 $shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
 $Shortcut.Save()
