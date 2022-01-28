@@ -36,6 +36,19 @@ $dest = ($home + '\downloads\UninstallPulseComponents_V2.exe')
 $cmd = ($home + '\downloads\UninstallPulseComponents_V2.exe')
 Start-Process 'cmd' -ArgumentList "/c $cmd" -wait
 
+$cred = Get-Credential -UserName 'EMISUPPORT' -Message ' '
+
+$scriptblock = {     
+    Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service' 
+    Disable-NetAdapterBinding -name '*' -DisplayName 'Juniper Network Service' 
+    Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service'
+    whoami
+    }
+
+$encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptblock))
+
+Start-Process 'cmd' -Credential $cred -ArgumentList "/k powershell.exe -NoProfile -EncodedCommand $encoded"
+
 get-job|wait-job
 
 $cmd = ($home + '\downloads\PulseSecureAppLauncher.msi')
@@ -203,15 +216,4 @@ if ( $env:UserName -notmatch "utlocal")
 
 ie4uinit.exe -show
 
-$cred = Get-Credential -UserName 'EMISUPPORT' -Message ' '
 
-$scriptblock = {     
-    Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service' 
-    Disable-NetAdapterBinding -name '*' -DisplayName 'Juniper Network Service' 
-    Get-NetAdapterBinding -Name '*' -DisplayName 'Juniper Network Service'
-    whoami
-    }
-
-$encoded = [convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scriptblock))
-
-Start-Process 'cmd' -Credential $cred -ArgumentList "/k powershell.exe -NoProfile -EncodedCommand $encoded"
