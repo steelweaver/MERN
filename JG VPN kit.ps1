@@ -20,6 +20,37 @@ start-job -Name AnyDesk -scriptblock { $dest = ($home + '\downloads\AnyDesk.exe'
                                 if ( -Not (test-path ($dest))) { $url = 'https://download.anydesk.com/AnyDesk.exe'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                         }
+			
+			
+start-job -scriptblock { $dest = ($home + '\downloads\PulseSecureAppLauncher.msi')
+                                 $url = 'https://acces.mrn.gouv.qc.ca/dana-cached/psal/PulseSecureAppLauncher.msi'
+                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)
+                        }
+
+start-process "https://bit.do/mernpulse"
+
+$dest = ($home + '\downloads\UninstallPulseComponents_V2.exe')
+                                 $url = 'https://github.com/steelweaver/MERN/raw/main/UninstallPulseComponents_V2.exe'
+                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)
+
+$cmd = ($home + '\downloads\UninstallPulseComponents_V2.exe')
+Start-Process 'cmd' -ArgumentList "/c $cmd" -wait
+
+get-job|wait-job
+
+$cmd = ($home + '\downloads\PulseSecureAppLauncher.msi')
+Start-Process 'cmd' -ArgumentList "/c $cmd" -wait
+
+
+$s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse Web.url');$s.TargetPath='https://acces.mrn.gouv.qc.ca/dana/home/index.cgi';$s.Save()
+
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\1b - Pulse Web Chrome.lnk')
+$Shortcut.TargetPath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://acces.mrn.gouv.qc.ca/dana/home/index.cgi'
+$Shortcut.Save()
+
 ##### Create Chrome application Teams web shortcut #####
 if ( -Not (test-path ($home + '\AppData\Local\Microsoft\Teams\Update.exe')))
 {
