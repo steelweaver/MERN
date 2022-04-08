@@ -118,26 +118,37 @@ $Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\OneDri
 
 $allpaths = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" , "C:\Program Files\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
+$i = 0
+
 foreach ($thispath in $allpaths) {
     if(test-path $thispath)
     {
+    $i = $i +1
         $TargetPath = $thispath
+        
+remove-item ($home + '\Desktop\2b - Teams Web ' + $i +  '.lnk')
+        $WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Web ' + $i +  '.lnk')
+$Shortcut.TargetPath =  $TargetPath
+$shortcut.IconLocation = $TargetPath +', 0'
+#$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
+
+
+remove-item ($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web ' + $i +  '.lnk')
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web ' + $i +  '.lnk')
+$Shortcut.TargetPath =  $TargetPath
+$shortcut.IconLocation = $TargetPath +', 0'
+#$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
+
     }
 }
 
-$WshShell = New-Object -comObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Web.lnk')
-$Shortcut.TargetPath =  $TargetPath
-$shortcut.IconLocation = $home +'\Teams.ico, 0'
-$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
-$Shortcut.Save()
-
-$WshShell = New-Object -comObject WScript.Shell
-$Shortcut = $WshShell.CreateShortcut($home + '\OneDrive - BuroVirtuel\Bureau\2b - Teams Web.lnk')
-$Shortcut.TargetPath =  $TargetPath
-$shortcut.IconLocation = $home +'\Teams.ico, 0'
-$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
-$Shortcut.Save()
+ie4uinit.exe -show
 
 ##### RDP web #####
 $rdpID = "Connexion_a_distance"
