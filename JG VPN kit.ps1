@@ -113,8 +113,8 @@ $Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\Deskto
 $Shortcut = (New-Object -comObject WScript.Shell).CreateShortcut($home +'\OneDrive - BuroVirtuel\Bureau\1a - Pulse_Secure.lnk') ;  $Shortcut.TargetPath = 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Pulse Secure\Pulse Secure.lnk' ; $Shortcut.Save()
 
 ###### teams web ######
-(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/microsoft_teams_256x256_WYr_icon.ico' , $home +'\Teams.ico') 
-
+#(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/microsoft_teams_256x256_WYr_icon.ico' , $home +'\Teams.ico') 
+(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/teams_icon_161059.ico' , $home +'\Teams.ico')  
 
 $allpaths = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" , "C:\Program Files\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
