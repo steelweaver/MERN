@@ -60,7 +60,7 @@ $s=(New-Object -COM WScript.Shell).CreateShortcut($home +'\Desktop\1b - Pulse We
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($home + '\Desktop\1b - Pulse Web Chrome.lnk')
 $Shortcut.TargetPath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
-$shortcut.IconLocation = $home +'\Teams.ico, 0'
+#$shortcut.IconLocation = $home +'\Teams.ico, 0'
 $Shortcut.Arguments = '--app=https://acces.mrn.gouv.qc.ca/dana/home/index.cgi'
 $Shortcut.Save()
 
