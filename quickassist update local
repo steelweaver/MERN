@@ -1,0 +1,71 @@
+hostname
+
+cls
+
+$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+$session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36"
+#$session.Cookies.Add((New-Object System.Net.Cookie("top100_id", "t1.-1.1921064349.1654198979204", "/", ".rg-adguard.net")))
+#$session.Cookies.Add((New-Object System.Net.Cookie("adtech_uid", "2e08cffb-f7f5-431e-b016-b205380a2d63%3Arg-adguard.net", "/", ".rg-adguard.net")))
+#$session.Cookies.Add((New-Object System.Net.Cookie("user-id_1.0.5_lr_lruid", "pQ8AAMMSmWIVR0ZuAWpUyQA%3D", "/", ".rg-adguard.net")))
+#$session.Cookies.Add((New-Object System.Net.Cookie("t2_sid_-1", "s1.719782199.1654198979205.1654202392625.1.11.11.1", "/", ".rg-adguard.net")))
+$site = Invoke-WebRequest -UseBasicParsing -Uri "https://store.rg-adguard.net/api/GetFiles" `
+-Method "POST" `
+-WebSession $session `
+-Headers @{
+"authority"="store.rg-adguard.net"
+  "method"="POST"
+  "path"="/api/GetFiles"
+  "scheme"="https"
+  "accept"="*/*"
+  "accept-encoding"="gzip, deflate, br"
+  "accept-language"="en-CA,en;q=0.9,en-GB;q=0.8,en-US;q=0.7,fr;q=0.6"
+  "origin"="https://store.rg-adguard.net"
+  "referer"="https://store.rg-adguard.net/"
+  "sec-ch-ua"="`" Not A;Brand`";v=`"99`", `"Chromium`";v=`"101`", `"Google Chrome`";v=`"101`""
+  "sec-ch-ua-mobile"="?0"
+  "sec-ch-ua-platform"="`"Windows`""
+  "sec-fetch-dest"="empty"
+  "sec-fetch-mode"="cors"
+  "sec-fetch-site"="same-origin"
+} `
+-ContentType "application/x-www-form-urlencoded" `
+-Body "type=url&url=https://www.microsoft.com/store/productId/9P7BP5VNWKX5&#8221&ring=RP&lang=en-CA"
+
+#$site.Links | Out-GridView
+
+# http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/9afa5368-bc21-4669-8de3-6bee3e4c606c?P1=1654203980&P2=404&P3=2&P4=mS22ZAafe9hDxFhfrTzfWCCLN3twd%2fgenyxPKfL1ZbpkrwnySJf0761SUSaLcfNFAYNv3rRpiar4jyMz%2bgErlQ%3d%3d
+foreach ( $thislink in $site.Links ) {
+    if ($thislink -match "appxbundle") {
+    write-host $thislink
+
+    $thislink = $thislink -split '"'
+     write-host ======================
+     write-host $thislink[1]     
+    }
+}
+
+$url = $thislink[1]   
+
+    Remove-WindowsCapability -online -name App.Support.QuickAssist~~~~0.0.1.0
+
+     $dldest = ('C:\logiciels\quickassist\')
+
+            if ( -Not (test-path ($dldest))) { New-Item -Path $dldest -ItemType Directory | out-null }
+        
+            $filename = 'MicrosoftCorporationII.QuickAssist.AppxBundle'
+        
+        #https://store.rg-adguard.net/
+        #url
+        #https://www.microsoft.com/store/productId/9P7BP5VNWKX5&#8221
+        #RP
+
+                #$url = ('http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/9afa5368-bc21-4669-8de3-6bee3e4c606c?P1=1654203032&P2=404&P3=2&P4=aEHpW1OTpXH%2bW3CZKAv%2flnWHEyLSj7nqh0WGSj0xXPlCen2TvfU3wkyBdhMhmZ8o7jO9HwUvOnwTcOAg4usFMA%3d%3d')
+                (New-Object System.Net.WebClient).DownloadFile( $url , $dldest+$filename)
+
+    $packagefullpath = ( $dldest + $filename )
+
+    $packagefullpath 
+
+    Add-AppxProvisionedPackage -online -SkipLicense -PackagePath $packagefullpath 
+
+    Get-AppxPackage -PackageTypeFilter Bundle -AllUsers | Select-Object -Property Name, PackageFullName | Sort-Object -Property Name  
