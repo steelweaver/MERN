@@ -29,8 +29,8 @@ cls
     Remove-Item -Recurse -force C:\Users\garjo3\AppData\Local\Microsoft\Teams
     Remove-Item -Recurse -force C:\Users\garjo3\AppData\Roaming\Microsoft\Teams
     Remove-Item -Recurse -force C:\Users\garjo3\AppData\Roaming\Teams
-    Remove-Item -force C:\windows\Prefetch\TEAMS*.*
-    Remove-Item -force $env:LOCALAPPDATA\Microsoft\Teams\
+    Remove-Item -Recurse -force C:\windows\Prefetch\TEAMS*.*
+    Remove-Item -Recurse -force $env:LOCALAPPDATA\Microsoft\Teams\
 
     write-host ===========================
     write-host uninstalled teams
