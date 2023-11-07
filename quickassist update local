@@ -2,6 +2,7 @@ hostname
 
 cls
 
+
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 $session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36"
 #$session.Cookies.Add((New-Object System.Net.Cookie("top100_id", "t1.-1.1921064349.1654198979204", "/", ".rg-adguard.net")))
