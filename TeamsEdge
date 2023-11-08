@@ -1,0 +1,23 @@
+$allpaths = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files\Microsoft\Edge\Application\msedge.exe"
+
+$i = 0
+
+foreach ($thispath in $allpaths) {
+    if(test-path $thispath)
+    {
+    $i = $i +1
+        $TargetPath = $thispath
+        
+remove-item ($home + '\Desktop\2b - Teams Web ' + $i +  '.lnk')
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Edge ' + $i +  '.lnk')
+$Shortcut.TargetPath =  $TargetPath
+$shortcut.IconLocation = $TargetPath +', 0'
+#$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
+    }
+}
+
+
+ie4uinit.exe -show
