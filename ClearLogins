@@ -1,6 +1,24 @@
 cls
 
     
+
+
+start-job -Name OLicenseCleanup -scriptblock { $dest = ($home + '\Downloads\OLicenseCleanup.zip')
+                                if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/e/1/b/e1bbdc16-fad4-4aa2-a309-2ba3cae8d424/OLicenseCleanup.zip'
+                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
+                                }
+
+start-job -Name signoutofwamaccounts -scriptblock { $dest = ($home + '\Downloads\signoutofwamaccounts.zip')
+                                if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/f/8/7/f8745d3b-49ad-4eac-b49a-2fa60b929e7d/signoutofwamaccounts.zip'
+                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
+                                }
+
+start-job -Name WPJCleanUp -scriptblock { $dest = ($home + '\Downloads\WPJCleanUp.zip')
+                                if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/8/e/f/8ef13ae0-6aa8-48a2-8697-5b1711134730/WPJCleanUp.zip'
+                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
+                                }
+
+
 $Credentials = (cmdkey /list | Where-Object {$_ -like "*Target=*"})
 Foreach ($Target in $Credentials) {
     $Target = ($Target -split (":", 2) | Select-Object -Skip 1).substring(1)
@@ -25,22 +43,6 @@ foreach ($thisfolder in $allfolders )
     }
 
 }
-
-start-job -Name OLicenseCleanup -scriptblock { $dest = ($home + '\Downloads\OLicenseCleanup.zip')
-                                if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/e/1/b/e1bbdc16-fad4-4aa2-a309-2ba3cae8d424/OLicenseCleanup.zip'
-                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
-                                }
-
-start-job -Name signoutofwamaccounts -scriptblock { $dest = ($home + '\Downloads\signoutofwamaccounts.zip')
-                                if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/f/8/7/f8745d3b-49ad-4eac-b49a-2fa60b929e7d/signoutofwamaccounts.zip'
-                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
-                                }
-
-start-job -Name WPJCleanUp -scriptblock { $dest = ($home + '\Downloads\WPJCleanUp.zip')
-                                if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/8/e/f/8ef13ae0-6aa8-48a2-8697-5b1711134730/WPJCleanUp.zip'
-                                (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
-                                }
-
 get-job|wait-job
 
 write-host OLicenseCleanup
