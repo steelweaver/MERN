@@ -1,8 +1,5 @@
 cls
 
-    
-
-
 start-job -Name OLicenseCleanup -scriptblock { $dest = ($home + '\Downloads\OLicenseCleanup.zip')
                                 if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/e/1/b/e1bbdc16-fad4-4aa2-a309-2ba3cae8d424/OLicenseCleanup.zip'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
@@ -17,7 +14,6 @@ start-job -Name WPJCleanUp -scriptblock { $dest = ($home + '\Downloads\WPJCleanU
                                 if ( -Not (test-path ($dest))) { $url = 'https://download.microsoft.com/download/8/e/f/8ef13ae0-6aa8-48a2-8697-5b1711134730/WPJCleanUp.zip'
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                                 }
-
 
 $Credentials = (cmdkey /list | Where-Object {$_ -like "*Target=*"})
 Foreach ($Target in $Credentials) {
@@ -43,6 +39,34 @@ foreach ($thisfolder in $allfolders )
     }
 
 }
+
+###### teams web ######
+#(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/microsoft_teams_256x256_WYr_icon.ico' , $home +'\Teams.ico') 
+(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/steelweaver/MERN/main/teams_icon_161059.ico' , $home +'\Teams.ico')  
+
+$allpaths = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" , "C:\Program Files\Microsoft\Edge\Application\msedge.exe"
+
+$i = 0
+
+foreach ($thispath in $allpaths) {
+    if(test-path $thispath)
+    {
+    $i = $i +1
+        $TargetPath = $thispath
+        
+remove-item ($home + '\Desktop\2b - Teams Web ' + $i +  '.lnk')
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($home + '\Desktop\2b - Teams Edge ' + $i +  '.lnk')
+$Shortcut.TargetPath =  $TargetPath
+$shortcut.IconLocation = $TargetPath +', 0'
+#$shortcut.IconLocation = $home +'\Teams.ico, 0'
+$Shortcut.Arguments = '--app=https://teams.microsoft.com/go'
+$Shortcut.Save()
+    }
+}
+
+ie4uinit.exe -show
+
 get-job|wait-job
 
 write-host OLicenseCleanup
