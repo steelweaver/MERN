@@ -1,0 +1,30 @@
+cls
+
+    
+$Credentials = (cmdkey /list | Where-Object {$_ -like "*Target=*"})
+Foreach ($Target in $Credentials) {
+    $Target = ($Target -split (":", 2) | Select-Object -Skip 1).substring(1)
+    $Argument = "/delete:" + $Target
+    Start-Process Cmdkey -ArgumentList $Argument -NoNewWindow -RedirectStandardOutput $False
+    }
+
+$Thepath = "C:\Users\*\AppData\Local\Packages\Microsoft.AAD.BrokerPlugin_cw5n1h2txyewy\AC\TokenBroker\Accounts"
+$allfolders = Get-ChildItem $Thepath -force 
+
+foreach ($thisfolder in $allfolders )
+{
+    write-host "thisfolder  - " $thisfolder
+    if(!(Get-ChildItem $thisfolder -force | Select-Object -First 1 | Measure-Object).Count -eq 0)
+    {
+        $found = Get-ChildItem $thisfolder -force | Select-Object -First 1
+        write-host "not empty - " $thisfolder
+        $folderstring = $thisfolder.tostring()
+        remove-item $thisfolder
+        #Rename-Item  $folderstring  ($folderstring  + '.old')
+        #New-Item -Path $folderstring -ItemType "directory"
+    }
+
+}
+
+
+Start-Process -FilePath "msedge" -ArgumentList "https://myaccount.microsoft.com/"
