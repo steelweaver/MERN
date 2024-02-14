@@ -1,0 +1,17 @@
+# Get all mapped drives
+$mappedDrives = Get-WmiObject -Class Win32_MappedLogicalDisk | Select-Object Name, ProviderName
+
+# Define the path for the .bat file on the user's desktop
+$batFilePath = [Environment]::GetFolderPath("Desktop") + "\mappedDrives.bat"
+
+# Create a new .bat file
+$batFile = New-Item -Path $batFilePath -ItemType File -Force
+
+# Loop through each mapped drive
+foreach ($drive in $mappedDrives) {
+    # Create a net use command for the drive
+    $command = "net use " + $drive.Name + " " + $drive.ProviderName + " /PERSISTENT:YES"
+    
+    # Add the command to the .bat file
+    Add-Content -Path $batFile.FullName -Value $command
+}
