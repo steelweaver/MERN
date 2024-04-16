@@ -15,6 +15,24 @@ start-job -Name WPJCleanUp -scriptblock { $dest = ($home + '\Downloads\WPJCleanU
                                 (New-Object System.Net.WebClient).DownloadFile( $url ,$dest)}
                                 }
 
+# Define old and new registry keys
+$oldKeyPath = "HKCU:\Software\Microsoft\IdentityCRL\TokenBroker\DefaultAccount"
+$newKeyPath = "HKCU:\Software\Microsoft\IdentityCRL\TokenBroker\DefaultAccount.old"
+
+# Create new registry key
+New-Item -Path $newKeyPath -Force
+
+# Get all properties from old registry key
+$properties = Get-ItemProperty -Path $oldKeyPath
+
+# Copy each property to new registry key
+foreach ($property in $properties.PSObject.Properties) {
+    Set-ItemProperty -Path $newKeyPath -Name $property.Name -Value $property.Value
+}
+
+# Delete old registry key
+Remove-Item -Path $oldKeyPath -Recurse
+
 $Credentials = (cmdkey /list | Where-Object {$_ -like "*Target=*"})
 Foreach ($Target in $Credentials) {
     $Target = ($Target -split (":", 2) | Select-Object -Skip 1).substring(1)
